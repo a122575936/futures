@@ -54,7 +54,7 @@ def parseData(hlocs, contract):
     volumerate = volumelast / volumelastbutone
     closerate = abs(closelast - closelastbutone) / closelastbutone
     
-    if volumerate > 3 or closerate > 0.005:
+    if volumerate > 2 or closerate > 0.004:
         print('heavy volume %5.1f close rate %.3f time %s contract %s' % (volumerate, closerate, last.t, contract))
 
 def loadData(contract):
@@ -152,5 +152,6 @@ def saveCSV(contracts):
 contracts = loadMainContracts()
 #saveCSV(contracts)
 call_repeatedly(60, onTimer, contracts)
+onTimer(contracts)
 #test_convert1minto15min()
 #parseHistoryData(contracts)
