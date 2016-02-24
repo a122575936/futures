@@ -58,17 +58,26 @@ def parseData(hlocs, contract):
         print('heavy volume %5.1f close rate %.3f time %s contract %s' % (volumerate, closerate, last.t, contract))
 
 def loadData(contract):
-    #print('loadData ...')
+    #print('loadData ... ', contract)
     f = urllib2.urlopen('http://stock2.finance.sina.com.cn/futures/api/json.php/IndexService.getInnerFuturesMinLine?symbol=' + contract)
     #f = urllib2.urlopen('http://stock2.finance.sina.com.cn/futures/api/json.php/IndexService.getInnerFuturesMinLine5d?symbol=' + contract)
     strdata = f.read()
-    hlocs = json.loads(strdata)
+    hlocs = None
+    try:
+        hlocs = json.loads(strdata)
+    except:
+        print('json error ', contract)
+        print('strdata ', strdata)
+        pass
+
 
     if hlocs == None:
         #print 'hlocs is none'
         return None
 
     def in_trading_time(hloc):
+        if len(hloc) < 4:
+            return False
         t = hloc[4]
         ts = t.split(':')
         h = int(ts[0])
@@ -127,7 +136,7 @@ def parseHistoryData(contracts):
 
 def onTimer(contracts):
     #contracts = ['l1605']
-    print '---------------'
+    print '---------------' + time.ctime()
     for c in contracts:
         #print 'parse ' + c
         hlocs = loadData(c)
