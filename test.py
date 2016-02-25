@@ -90,6 +90,9 @@ def loadData(contract):
             return False
         if 15 <= h and h <= 20:
             return False
+        localtime = time.localtime()
+        if h < 20 and localtime.tm_hour >= 20:
+            return False
         return True
 
     #print('len of hlocs ', len(hlocs))
